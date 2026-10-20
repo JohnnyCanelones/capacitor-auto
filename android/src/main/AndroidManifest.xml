@@ -1,16 +1,7 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
-    <application>
-        <meta-data
-            android:name="com.google.android.gms.car.application"
-            android:resource="@xml/automotive_app_desc" />
-
-        <service
-            android:name="app.capgo.auto.AutoCarAppService"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="androidx.car.app.CarAppService" />
-                <category android:name="androidx.car.app.category.IOT" />
-            </intent-filter>
-        </service>
-    </application>
-</manifest>
+<!--
+  RadioBase uses this plugin for CarPlay only. Android Auto is served by
+  capacitor-plugin-media-control, which declares its own
+  com.google.android.gms.car.application; declaring it here too fails the
+  manifest merge, and the IOT CarAppService would list the app twice in the car.
+-->
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" />
