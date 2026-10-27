@@ -172,6 +172,7 @@ public class AutoCarPlaySceneDelegate: UIResponder, CPTemplateApplicationSceneDe
         didConnect interfaceController: CPInterfaceController
     ) {
         self.interfaceController = interfaceController
+        releaseIdlePlaybackSession()
         AutoStore.shared.addListener(self)
         AutoBridge.shared.setConnected(true)
         startNetworkMonitor()
@@ -188,6 +189,15 @@ public class AutoCarPlaySceneDelegate: UIResponder, CPTemplateApplicationSceneDe
         rootTemplate = nil
         rootTitle = ""
         AutoBridge.shared.setConnected(false)
+    }
+
+    private func releaseIdlePlaybackSession() {
+        let bibleOrStudyIsPlaying = TMTPlayer.shared.isActivelyPlaying()
+        let radioIsPlaying = CarPlayHelper.shared.isActivelyPlaying()
+        guard !bibleOrStudyIsPlaying, !radioIsPlaying else { return }
+
+        TMTPlayer.shared.releasePlaybackSessionIfIdle()
+        CarPlayHelper.shared.releasePlaybackSessionIfIdle()
     }
 
     public func onAutoStoreUpdated(_ key: String, value: [String: Any]?, transient: Bool) {
